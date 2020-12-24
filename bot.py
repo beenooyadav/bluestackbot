@@ -31,7 +31,7 @@ async def recent(ctx, *query):
     await ctx.send(response)
 
 
-@bot.event
+@bot.listen()
 async def on_message(message):
     if message.author == bot.user:
         return
