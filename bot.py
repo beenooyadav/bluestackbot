@@ -30,4 +30,13 @@ async def recent(ctx, *query):
     print(f'response: {response}')
     await ctx.send(response)
 
+
+@bot.event
+async def on_message(message):
+    if message.author == bot.user:
+        return
+    if message.content.lower() == 'hi':
+        response = 'Hey'
+        await message.channel.send(response)
+
 bot.run(TOKEN)
