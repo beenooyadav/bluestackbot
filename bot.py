@@ -1,6 +1,6 @@
 import os
-import random
 
+import google_search
 from discord.ext import commands
 from dotenv import load_dotenv
 
@@ -10,18 +10,24 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 bot = commands.Bot(command_prefix='!')
 
 
-@bot.command(name='99', help='Responds with a random quote from Brooklyn 99')
-async def nine_nine(ctx):
-    brooklyn_99_quotes = [
-        'I\'m the human form of the 💯 emoji.',
-        'Bingpot!',
-        (
-            'Cool. Cool cool cool cool cool cool cool, '
-            'no doubt no doubt no doubt no doubt.'
-        ),
-    ]
+@bot.event
+async def on_ready():
+    print(f'{bot.user.name} has connected to Discord!')
 
-    response = random.choice(brooklyn_99_quotes)
+
+@bot.command(name='google', help='top five links')
+async def google(ctx, *query):
+    print(f'query: {query}')
+    response = '\n'.join(google_search.get_top5_google_result(query))
+    print(f'response: {response}')
+    await ctx.send(response)
+
+
+@bot.command(name='recent', help='recent searches')
+async def recent(ctx, *query):
+    print(f'query: {query}')
+    response = '\n'.join(google_search.recent_search_result(query))
+    print(f'response: {response}')
     await ctx.send(response)
 
 bot.run(TOKEN)
